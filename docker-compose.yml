@@ -3,8 +3,6 @@ services:
   frontend:
     build:
       context: ./frontend
-    env_file:
-      - .env.frontend
     restart: always
     networks:
       - nginx-network

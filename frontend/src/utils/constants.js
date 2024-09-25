@@ -1,4 +1,4 @@
-export const URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
+export const URL = process.env.REACT_APP_BACKEND_URL || 'https://api.kupi.dp.nomorepartiesco.ru';
 
 export const MINIMUM_PASSWORD_LENGTH = 3;
 export const MINIMUM_USERNAME_LENGTH = 3;
