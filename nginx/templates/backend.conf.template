@@ -1,0 +1,17 @@
+upstream backend {
+    server backend:4000;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${BACKEND_HOST};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        proxy_pass http://backend;
+    }
+}

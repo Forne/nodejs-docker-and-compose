@@ -1,0 +1,6 @@
+.idea
+
+.env.backend
+.env.frontend
+.env.nginx
+.env.postgres

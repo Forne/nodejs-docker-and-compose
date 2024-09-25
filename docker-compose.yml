@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  frontend:
+    build:
+      context: ./frontend
+    env_file:
+      - .env.frontend
+    restart: always
+    networks:
+      - nginx-network
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - .env.backend.example
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - db-network
+      - nginx-network
+  postgres:
+    image: "postgres:12"
+    restart: always
+    env_file:
+      - .env.postgres.example
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - db-network
+  nginx:
+    image: nginx:latest
+    env_file:
+      - .env.nginx
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - certbot-acme:/var/www/certbot:ro
+      - certbot-data:/etc/letsencrypt:ro
+    networks:
+      - nginx-network
+      - external
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - certbot-acme:/var/www/certbot:rw
+      - certbot-data:/etc/letsencrypt:rw
+
+volumes:
+  postgres-data:
+  certbot-acme:
+  certbot-data:
+
+networks:
+  db-network:
+    driver: bridge
+    internal: true
+  nginx-network:
+    driver: bridge
+    internal: true
+  external:
+    driver: bridge
